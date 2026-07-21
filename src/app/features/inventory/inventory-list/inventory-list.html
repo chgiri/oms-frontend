@@ -1,0 +1,80 @@
+<div class="inventory-page">
+  <div class="header">
+    <h2>Inventory</h2>
+    <a mat-flat-button color="primary" routerLink="/inventory/new">
+      <mat-icon>add</mat-icon> New stock record
+    </a>
+  </div>
+
+  <form [formGroup]="filterForm" class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Search by location</mat-label>
+      <input matInput formControlName="location" />
+    </mat-form-field>
+    <mat-checkbox formControlName="lowStockOnly">Low stock only</mat-checkbox>
+  </form>
+
+  @if (loading()) {
+    <mat-spinner diameter="32"></mat-spinner>
+  } @else {
+    <table mat-table [dataSource]="records()">
+      <ng-container matColumnDef="productName">
+        <th mat-header-cell *matHeaderCellDef>Product</th>
+        <td mat-cell *matCellDef="let record">{{ record.productName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef>Location</th>
+        <td mat-cell *matCellDef="let record">{{ record.location }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantityAvailable">
+        <th mat-header-cell *matHeaderCellDef>Available</th>
+        <td mat-cell *matCellDef="let record">
+          {{ record.quantityAvailable }}
+          @if (isLowStock(record)) {
+            <mat-chip color="warn">LOW STOCK</mat-chip>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantityReserved">
+        <th mat-header-cell *matHeaderCellDef>Reserved</th>
+        <td mat-cell *matCellDef="let record">{{ record.quantityReserved }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="reorderLevel">
+        <th mat-header-cell *matHeaderCellDef>Reorder level</th>
+        <td mat-cell *matCellDef="let record">{{ record.reorderLevel }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let record">
+          <button mat-icon-button (click)="editRecord(record)" aria-label="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            *appHasRole="['ADMIN']"
+            mat-icon-button
+            color="warn"
+            (click)="deleteRecord(record)"
+            aria-label="Delete"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [length]="totalElements()"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
+  }
+</div>

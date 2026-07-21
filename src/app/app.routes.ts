@@ -60,8 +60,29 @@ export const routes: Routes = [
             (m) => m.CustomerFormComponent,
           ),
       },
+      {
+        path: 'inventory',
+        loadComponent: () =>
+          import('./features/inventory/inventory-list/inventory-list.component').then(
+            (m) => m.InventoryListComponent,
+          ),
+      },
+      {
+        path: 'inventory/new',
+        loadComponent: () =>
+          import('./features/inventory/inventory-form/inventory-form.component').then(
+            (m) => m.InventoryFormComponent,
+          ),
+      },
+      {
+        path: 'inventory/:id/edit',
+        loadComponent: () =>
+          import('./features/inventory/inventory-form/inventory-form.component').then(
+            (m) => m.InventoryFormComponent,
+          ),
+      },
 
-      // Inventory, Orders, Payments, Shipments
+      // Orders, Payments, Shipments
       // get added here as child routes in the phases ahead.
     ],
   },
