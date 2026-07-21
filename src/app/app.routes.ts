@@ -39,8 +39,29 @@ export const routes: Routes = [
             (m) => m.ProductFormComponent,
           ),
       },
+      {
+        path: 'customers',
+        loadComponent: () =>
+          import('./features/customers/customer-list/customer-list.component').then(
+            (m) => m.CustomersListComponent,
+          ),
+      },
+      {
+        path: 'customers/new',
+        loadComponent: () =>
+          import('./features/customers/customer-form/customer-form.component').then(
+            (m) => m.CustomerFormComponent,
+          ),
+      },
+      {
+        path: 'customers/:id/edit',
+        loadComponent: () =>
+          import('./features/customers/customer-form/customer-form.component').then(
+            (m) => m.CustomerFormComponent,
+          ),
+      },
 
-      // Customers, Inventory, Orders, Payments, Shipments
+      // Inventory, Orders, Payments, Shipments
       // get added here as child routes in the phases ahead.
     ],
   },
