@@ -22,4 +22,25 @@ export const routes: Routes = [
       // get added here as child routes in the phases ahead.
     ],
   },
+  {
+    path: 'products',
+    loadComponent: () =>
+      import('./features/products/products-list/products-list.component').then(
+        (m) => m.ProductsListComponent,
+      ),
+  },
+  {
+    path: 'products/new',
+    loadComponent: () =>
+      import('./features/products/product-form/product-form.component').then(
+        (m) => m.ProductFormComponent,
+      ),
+  },
+  {
+    path: 'products/:id/edit',
+    loadComponent: () =>
+      import('./features/products/product-form/product-form.component').then(
+        (m) => m.ProductFormComponent,
+      ),
+  },
 ];
