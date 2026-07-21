@@ -11,12 +11,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
-        tokenStorage.clearToken();
+        tokenStorage.clearSession();
         router.navigate(['/login']);
       }
       // Re-throw so the calling component/service can still react
       // (e.g. show a specific validation message from error.error.message).
       return throwError(() => error);
-    })
+    }),
   );
 };

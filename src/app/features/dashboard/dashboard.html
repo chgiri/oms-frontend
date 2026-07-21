@@ -1,0 +1,5 @@
+<div style="padding: 24px">
+  <h2>Welcome, {{ authService.currentUser()?.username }}</h2>
+  <p>Role: {{ authService.currentUser()?.role }}</p>
+  <button mat-flat-button color="warn" (click)="logout()">Log out</button>
+</div>

@@ -1,24 +1,28 @@
 import { Injectable, signal } from '@angular/core';
+import { AuthSession } from '../../features/auth/auth.model';
 
-const TOKEN_KEY = 'oms_access_token';
+const SESSION_KEY = 'oms_auth_session';
+
+function readStoredSession(): AuthSession | null {
+  const raw = localStorage.getItem(SESSION_KEY);
+  return raw ? (JSON.parse(raw) as AuthSession) : null;
+}
 
 @Injectable({ providedIn: 'root' })
 export class TokenStorageService {
-  // A signal so components (e.g. "is logged in?" in the toolbar) can react
-  // to login/logout without manually subscribing to anything.
-  readonly token = signal<string | null>(localStorage.getItem(TOKEN_KEY));
+  readonly session = signal<AuthSession | null>(readStoredSession());
 
-  setToken(token: string): void {
-    localStorage.setItem(TOKEN_KEY, token);
-    this.token.set(token);
+  setSession(session: AuthSession): void {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    this.session.set(session);
   }
 
-  clearToken(): void {
-    localStorage.removeItem(TOKEN_KEY);
-    this.token.set(null);
+  clearSession(): void {
+    localStorage.removeItem(SESSION_KEY);
+    this.session.set(null);
   }
 
   getToken(): string | null {
-    return this.token();
+    return this.session()?.accessToken ?? null;
   }
 }
