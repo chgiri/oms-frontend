@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Service, signal } from '@angular/core';
 import { AuthSession } from '../../features/auth/auth.model';
 
 const SESSION_KEY = 'oms_auth_session';
@@ -8,7 +8,7 @@ function readStoredSession(): AuthSession | null {
   return raw ? (JSON.parse(raw) as AuthSession) : null;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class TokenStorageService {
   readonly session = signal<AuthSession | null>(readStoredSession());
 
