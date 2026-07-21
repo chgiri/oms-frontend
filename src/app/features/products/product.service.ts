@@ -2,7 +2,8 @@ import { Service, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { PagedResponse, Product, ProductPage, ProductRequest, SpringPage } from './product.model';
+import { Product, ProductRequest } from './product.model';
+import { EntityPage, PagedResponse, SpringPage } from '../../shared/models/pagination.model';
 
 export interface ProductSearchFilters {
   name?: string;
@@ -20,7 +21,7 @@ export class ProductService {
     pageSize: number,
     sortBy = 'id',
     sortDir: 'asc' | 'desc' = 'asc',
-  ): Observable<ProductPage> {
+  ): Observable<EntityPage<Product>> {
     const params = new HttpParams()
       .set('pageNo', pageIndex)
       .set('pageSize', pageSize)
@@ -36,7 +37,7 @@ export class ProductService {
     filters: ProductSearchFilters,
     pageIndex: number,
     pageSize: number,
-  ): Observable<ProductPage> {
+  ): Observable<EntityPage<Product>> {
     let params = new HttpParams()
       .set('page', pageIndex)
       .set('size', pageSize)
@@ -69,7 +70,7 @@ export class ProductService {
 
   // --- adapters: normalize both backend pagination shapes into one ---
 
-  private fromPagedResponse(res: PagedResponse<Product>): ProductPage {
+  private fromPagedResponse(res: PagedResponse<Product>): EntityPage<Product> {
     return {
       content: res.content,
       pageIndex: res.pageNo,
@@ -78,7 +79,7 @@ export class ProductService {
     };
   }
 
-  private fromSpringPage(res: SpringPage<Product>): ProductPage {
+  private fromSpringPage(res: SpringPage<Product>): EntityPage<Product> {
     return {
       content: res.content,
       pageIndex: res.number,
