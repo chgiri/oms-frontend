@@ -1,0 +1,24 @@
+.shell-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 220px;
+}
+
+.active-link {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.user-info {
+  margin-right: 12px;
+  font-size: 0.875rem;
+}
+
+.content {
+  padding: 24px;
+}
