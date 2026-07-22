@@ -1,0 +1,50 @@
+.form-card {
+  max-width: 640px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+
+  .product-field {
+    flex: 2;
+  }
+
+  .qty-field {
+    flex: 0 0 90px;
+  }
+
+  .subtotal {
+    flex: 0 0 80px;
+    text-align: right;
+    color: #666;
+  }
+}
+
+.estimated-total {
+  font-weight: 600;
+  text-align: right;
+  margin: 12px 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.error {
+  color: #b3261e;
+  font-size: 0.875rem;
+  margin: 4px 0;
+}
+
+.hint { color: #666; font-size: 0.8rem; }

@@ -1,0 +1,15 @@
+@if (isCancelled()) {
+  <div class="cancelled-banner">This order was cancelled.</div>
+} @else {
+  <div class="timeline">
+    @for (step of steps; track step; let i = $index) {
+      <div class="step" [class]="stepState(i)">
+        <div class="dot"></div>
+        <span class="label">{{ step }}</span>
+      </div>
+      @if (i < steps.length - 1) {
+        <div class="connector" [class.done]="i < currentIndex()"></div>
+      }
+    }
+  </div>
+}

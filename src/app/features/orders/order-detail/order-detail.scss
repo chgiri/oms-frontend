@@ -1,0 +1,37 @@
+.order-detail-page {
+  max-width: 800px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.details-card {
+  margin-top: 16px;
+}
+
+.status-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.no-actions {
+  color: #666;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+table {
+  width: 100%;
+  margin: 16px 0;
+}
+
+.total {
+  text-align: right;
+  font-size: 1.1rem;
+}

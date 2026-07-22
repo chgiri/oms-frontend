@@ -1,0 +1,19 @@
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #3f51b5;
+    outline-offset: -2px;
+  }
+}
+
+.disabled-action {
+  cursor: not-allowed;
+  display: inline-block; // spans don't normally show a custom cursor without a display value
+}

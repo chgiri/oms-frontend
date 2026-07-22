@@ -338,7 +338,7 @@ export interface paths {
         head?: never;
         /**
          * Transition an order's status
-         * @description Moves the order to a new status. Allowed transitions: PENDING → CONFIRMED or CANCELLED; CONFIRMED → SHIPPED or CANCELLED; SHIPPED → DELIVERED. DELIVERED and CANCELLED are terminal — any other transition returns a 409.
+         * @description Moves the order to a new status. Allowed transitions: PENDING → AWAITING_PAYMENT or CANCELLED; AWAITING_PAYMENT → CONFIRMED or CANCELLED; CONFIRMED → SHIPPED or CANCELLED; SHIPPED → DELIVERED. DELIVERED and CANCELLED are terminal — any other transition returns a 409.
          */
         patch: operations["updateOrderStatus"];
         trace?: never;
@@ -1327,12 +1327,10 @@ export interface components {
             sort?: string[];
         };
         PageShipmentResponse: {
-            /** Format: int64 */
-            totalElements?: number;
             /** Format: int32 */
             totalPages?: number;
-            sort?: components["schemas"]["SortObject"];
-            pageable?: components["schemas"]["PageableObject"];
+            /** Format: int64 */
+            totalElements?: number;
             first?: boolean;
             last?: boolean;
             /** Format: int32 */
@@ -1342,23 +1340,25 @@ export interface components {
             number?: number;
             /** Format: int32 */
             numberOfElements?: number;
+            sort?: components["schemas"]["SortObject"];
+            pageable?: components["schemas"]["PageableObject"];
             empty?: boolean;
         };
         PageableObject: {
-            unpaged?: boolean;
+            /** Format: int64 */
+            offset?: number;
             sort?: components["schemas"]["SortObject"];
             paged?: boolean;
             /** Format: int32 */
-            pageNumber?: number;
-            /** Format: int32 */
             pageSize?: number;
-            /** Format: int64 */
-            offset?: number;
+            unpaged?: boolean;
+            /** Format: int32 */
+            pageNumber?: number;
         };
         SortObject: {
+            empty?: boolean;
             unsorted?: boolean;
             sorted?: boolean;
-            empty?: boolean;
         };
         /** @description Paginated response wrapper */
         PagedResponseProductResponse: {
@@ -1395,12 +1395,10 @@ export interface components {
             last: boolean;
         };
         PageProductResponse: {
-            /** Format: int64 */
-            totalElements?: number;
             /** Format: int32 */
             totalPages?: number;
-            sort?: components["schemas"]["SortObject"];
-            pageable?: components["schemas"]["PageableObject"];
+            /** Format: int64 */
+            totalElements?: number;
             first?: boolean;
             last?: boolean;
             /** Format: int32 */
@@ -1410,6 +1408,8 @@ export interface components {
             number?: number;
             /** Format: int32 */
             numberOfElements?: number;
+            sort?: components["schemas"]["SortObject"];
+            pageable?: components["schemas"]["PageableObject"];
             empty?: boolean;
         };
         /** @description Paginated response wrapper */
@@ -1447,12 +1447,10 @@ export interface components {
             last: boolean;
         };
         PagePaymentResponse: {
-            /** Format: int64 */
-            totalElements?: number;
             /** Format: int32 */
             totalPages?: number;
-            sort?: components["schemas"]["SortObject"];
-            pageable?: components["schemas"]["PageableObject"];
+            /** Format: int64 */
+            totalElements?: number;
             first?: boolean;
             last?: boolean;
             /** Format: int32 */
@@ -1462,6 +1460,8 @@ export interface components {
             number?: number;
             /** Format: int32 */
             numberOfElements?: number;
+            sort?: components["schemas"]["SortObject"];
+            pageable?: components["schemas"]["PageableObject"];
             empty?: boolean;
         };
         /** @description Paginated response wrapper */
@@ -1499,12 +1499,10 @@ export interface components {
             last: boolean;
         };
         PageOrderResponse: {
-            /** Format: int64 */
-            totalElements?: number;
             /** Format: int32 */
             totalPages?: number;
-            sort?: components["schemas"]["SortObject"];
-            pageable?: components["schemas"]["PageableObject"];
+            /** Format: int64 */
+            totalElements?: number;
             first?: boolean;
             last?: boolean;
             /** Format: int32 */
@@ -1514,6 +1512,8 @@ export interface components {
             number?: number;
             /** Format: int32 */
             numberOfElements?: number;
+            sort?: components["schemas"]["SortObject"];
+            pageable?: components["schemas"]["PageableObject"];
             empty?: boolean;
         };
         /** @description Paginated response wrapper */
@@ -1551,12 +1551,10 @@ export interface components {
             last: boolean;
         };
         PageInventoryResponse: {
-            /** Format: int64 */
-            totalElements?: number;
             /** Format: int32 */
             totalPages?: number;
-            sort?: components["schemas"]["SortObject"];
-            pageable?: components["schemas"]["PageableObject"];
+            /** Format: int64 */
+            totalElements?: number;
             first?: boolean;
             last?: boolean;
             /** Format: int32 */
@@ -1566,6 +1564,8 @@ export interface components {
             number?: number;
             /** Format: int32 */
             numberOfElements?: number;
+            sort?: components["schemas"]["SortObject"];
+            pageable?: components["schemas"]["PageableObject"];
             empty?: boolean;
         };
         /** @description Paginated response wrapper */
@@ -1603,12 +1603,10 @@ export interface components {
             last: boolean;
         };
         PageCustomerResponse: {
-            /** Format: int64 */
-            totalElements?: number;
             /** Format: int32 */
             totalPages?: number;
-            sort?: components["schemas"]["SortObject"];
-            pageable?: components["schemas"]["PageableObject"];
+            /** Format: int64 */
+            totalElements?: number;
             first?: boolean;
             last?: boolean;
             /** Format: int32 */
@@ -1618,6 +1616,8 @@ export interface components {
             number?: number;
             /** Format: int32 */
             numberOfElements?: number;
+            sort?: components["schemas"]["SortObject"];
+            pageable?: components["schemas"]["PageableObject"];
             empty?: boolean;
         };
         ErrorResponse: {
