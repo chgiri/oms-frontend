@@ -58,7 +58,8 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 Generate types from backend's OpenAPI spec with the backend running on localhost:8080, run in the oms-frontend folder:
 
-```npm install -D openapi-typescript --legacy-peer-deps
+```bash
+npm install -D openapi-typescript --legacy-peer-deps
 npx openapi-typescript http://localhost:8080/v3/api-docs -o src/app/shared/models/api-types.ts
 ```
 
