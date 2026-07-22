@@ -58,8 +58,9 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 Generate types from backend's OpenAPI spec with the backend running on localhost:8080, run in the oms-frontend folder:
 
-npm install -D openapi-typescript --legacy-peer-deps
+```npm install -D openapi-typescript --legacy-peer-deps
 npx openapi-typescript http://localhost:8080/v3/api-docs -o src/app/shared/models/api-types.ts
+```
 
 --legacy-peer-deps tells npm to skip strict peer-dependency resolution for this install (closer to how npm behaved pre-v7) — appropriate here specifically because this is a dev-only, standalone codegen tool, not a runtime dependency that shares TypeScript's actual compilation pipeline with the app.
 
