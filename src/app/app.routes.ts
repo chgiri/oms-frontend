@@ -102,8 +102,22 @@ export const routes: Routes = [
             (m) => m.OrderDetailComponent,
           ),
       },
+      {
+        path: 'payments',
+        loadComponent: () =>
+          import('./features/payments/payments-list/payments-list.component').then(
+            (m) => m.PaymentsListComponent,
+          ),
+      },
+      {
+        path: 'payments/new',
+        loadComponent: () =>
+          import('./features/payments/payment-form/payment-form.component').then(
+            (m) => m.PaymentFormComponent,
+          ),
+      },
 
-      // Payments, Shipments
+      // Shipments
       // get added here as child routes in the phases ahead.
     ],
   },
