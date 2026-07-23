@@ -116,9 +116,20 @@ export const routes: Routes = [
             (m) => m.PaymentFormComponent,
           ),
       },
-
-      // Shipments
-      // get added here as child routes in the phases ahead.
+      {
+        path: 'shipments',
+        loadComponent: () =>
+          import('./features/shipments/shipments-list/shipments-list.component').then(
+            (m) => m.ShipmentsListComponent,
+          ),
+      },
+      {
+        path: 'shipments/new',
+        loadComponent: () =>
+          import('./features/shipments/shipment-form/shipment-form.component').then(
+            (m) => m.ShipmentFormComponent,
+          ),
+      },
     ],
   },
 ];

@@ -1,0 +1,40 @@
+<mat-card class="form-card">
+  <mat-card-header>
+    <mat-card-title>New shipment</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Order ID</mat-label>
+        <input matInput type="number" formControlName="orderId" />
+        @if (form.controls.orderId.hasError('required') && form.controls.orderId.touched) {
+          <mat-error>Order ID is required.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Carrier</mat-label>
+        <mat-select formControlName="carrier">
+          @for (carrier of carriers; track carrier) {
+            <mat-option [value]="carrier">{{ carrier }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.carrier.hasError('required') && form.controls.carrier.touched) {
+          <mat-error>Select a carrier.</mat-error>
+        }
+      </mat-form-field>
+
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+
+      <div class="actions">
+        <button mat-button type="button" routerLink="/shipments">Cancel</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="saving()">
+          Create shipment
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
