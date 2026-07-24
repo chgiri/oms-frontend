@@ -115,8 +115,8 @@ export class OrderFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.customerService.getAll(0, 100).subscribe((page) => this.customers.set(page.content));
-    this.productService.getAll(0, 100).subscribe((page) => this.products.set(page.content));
+    this.customerService.getAllForPicker().subscribe((customers) => this.customers.set(customers));
+    this.productService.getAllForPicker().subscribe((products) => this.products.set(products));
   }
 
   submit(): void {

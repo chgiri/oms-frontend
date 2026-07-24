@@ -22,6 +22,7 @@ import { interval, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
+import { getAllowedTransitions } from '../../../shared/models/status-workflow.model';
 
 @Component({
   selector: 'app-order-detail',
@@ -56,8 +57,7 @@ export class OrderDetailComponent implements OnInit {
 
   get availableTransitions(): OrderStatus[] {
     const current = this.order()?.status;
-    if (!current) return [];
-    return ALLOWED_MANUAL_TRANSITIONS[current] ?? [];
+    return current ? getAllowedTransitions(ALLOWED_MANUAL_TRANSITIONS, current) : [];
   }
 
   get adminOverrideTransitions(): OrderStatus[] {

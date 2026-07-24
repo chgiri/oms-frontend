@@ -28,6 +28,7 @@ import { ApiError } from '../../../shared/models/api-error.model';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PromptDialogComponent } from '../../../shared/components/prompt-dialog/prompt-dialog.component';
+import { getAllowedTransitions } from '../../../shared/models/status-workflow.model';
 
 @Component({
   selector: 'app-payments-list',
@@ -129,7 +130,7 @@ export class PaymentsListComponent implements OnInit {
   }
 
   availableTransitions(payment: Payment): PaymentStatus[] {
-    return ALLOWED_PAYMENT_TRANSITIONS[payment.status] ?? [];
+    return getAllowedTransitions(ALLOWED_PAYMENT_TRANSITIONS, payment.status);
   }
 
   isDeletable(payment: Payment): boolean {

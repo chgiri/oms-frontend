@@ -1,6 +1,6 @@
 import { Service, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, shareReplay, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { EntityPage, PagedResponse, SpringPage } from '../../shared/models/pagination.model';
 import { Customer, CustomerRequest, CustomerStatus } from './customer.model';
@@ -15,6 +15,23 @@ export interface CustomerSearchFilters {
 export class CustomerService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/customers`;
+  private pickerCache$: Observable<Customer[]> | null = null;
+
+  // Cached, shared list for dropdowns/pickers (Inventory form, Order form, etc.).
+  // Multiple components calling this in the same session share one HTTP request.
+  getAllForPicker(): Observable<Customer[]> {
+    if (!this.pickerCache$) {
+      this.pickerCache$ = this.getAll(0, 100).pipe(
+        map((page) => page.content),
+        shareReplay(1),
+      );
+    }
+    return this.pickerCache$;
+  }
+
+  private invalidatePickerCache(): void {
+    this.pickerCache$ = null;
+  }
 
   getAll(
     pageIndex: number,
@@ -67,14 +84,20 @@ export class CustomerService {
   }
 
   create(request: CustomerRequest): Observable<Customer> {
-    return this.http.post<Customer>(this.baseUrl, request);
+    return this.http
+      .post<Customer>(this.baseUrl, request)
+      .pipe(tap(() => this.invalidatePickerCache()));
   }
 
   update(id: number, request: CustomerRequest): Observable<Customer> {
-    return this.http.put<Customer>(`${this.baseUrl}/${id}`, request);
+    return this.http
+      .put<Customer>(`${this.baseUrl}/${id}`, request)
+      .pipe(tap(() => this.invalidatePickerCache()));
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http
+      .delete<void>(`${this.baseUrl}/${id}`)
+      .pipe(tap(() => this.invalidatePickerCache()));
   }
 }

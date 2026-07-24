@@ -16,7 +16,15 @@ import { SnackbarService } from '../../../shared/services/snackbar.service';
 @Component({
   selector: 'app-inventory-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+  ],
   templateUrl: './inventory-form.html',
   styleUrl: './inventory-form.scss',
 })
@@ -48,7 +56,7 @@ export class InventoryFormComponent implements OnInit {
   ngOnInit(): void {
     // Pull enough products to populate a dropdown. Fine at this project's scale —
     // a searchable/paginated picker would replace this once the product catalog grows large.
-    this.productService.getAll(0, 100).subscribe((page) => this.products.set(page.content));
+    this.productService.getAllForPicker().subscribe((products) => this.products.set(products));
 
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
@@ -81,7 +89,9 @@ export class InventoryFormComponent implements OnInit {
 
     save$.subscribe({
       next: () => {
-        this.snackbar.success(this.isEditMode ? 'Inventory record updated.' : 'Inventory record created.');
+        this.snackbar.success(
+          this.isEditMode ? 'Inventory record updated.' : 'Inventory record created.',
+        );
         this.router.navigate(['/inventory']);
       },
       error: (err: HttpErrorResponse) => {

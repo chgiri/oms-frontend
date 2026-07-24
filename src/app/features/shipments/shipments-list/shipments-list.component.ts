@@ -28,6 +28,7 @@ import { SnackbarService } from '../../../shared/services/snackbar.service';
 import { PromptDialogComponent } from '../../../shared/components/prompt-dialog/prompt-dialog.component';
 import { ApiError } from '../../../shared/models/api-error.model';
 import { DatePipe } from '@angular/common';
+import { getAllowedTransitions } from '../../../shared/models/status-workflow.model';
 
 @Component({
   selector: 'app-shipments-list',
@@ -134,7 +135,7 @@ export class ShipmentsListComponent implements OnInit {
   }
 
   availableTransitions(shipment: Shipment): ShipmentStatus[] {
-    return ALLOWED_SHIPMENT_TRANSITIONS[shipment.status] ?? [];
+    return getAllowedTransitions(ALLOWED_SHIPMENT_TRANSITIONS, shipment.status);
   }
 
   isDeletable(shipment: Shipment): boolean {

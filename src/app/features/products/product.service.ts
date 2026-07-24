@@ -1,6 +1,6 @@
 import { Service, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, shareReplay, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Product, ProductRequest } from './product.model';
 import { EntityPage, PagedResponse, SpringPage } from '../../shared/models/pagination.model';
@@ -15,6 +15,23 @@ export interface ProductSearchFilters {
 export class ProductService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/products`;
+  private pickerCache$: Observable<Product[]> | null = null;
+
+  // Cached, shared list for dropdowns/pickers (Inventory form, Order form, etc.).
+  // Multiple components calling this in the same session share one HTTP request.
+  getAllForPicker(): Observable<Product[]> {
+    if (!this.pickerCache$) {
+      this.pickerCache$ = this.getAll(0, 100).pipe(
+        map((page) => page.content),
+        shareReplay(1),
+      );
+    }
+    return this.pickerCache$;
+  }
+
+  private invalidatePickerCache(): void {
+    this.pickerCache$ = null;
+  }
 
   getAll(
     pageIndex: number,
@@ -57,15 +74,21 @@ export class ProductService {
   }
 
   create(request: ProductRequest): Observable<Product> {
-    return this.http.post<Product>(this.baseUrl, request);
+    return this.http
+      .post<Product>(this.baseUrl, request)
+      .pipe(tap(() => this.invalidatePickerCache()));
   }
 
   update(id: number, request: ProductRequest): Observable<Product> {
-    return this.http.put<Product>(`${this.baseUrl}/${id}`, request);
+    return this.http
+      .put<Product>(`${this.baseUrl}/${id}`, request)
+      .pipe(tap(() => this.invalidatePickerCache()));
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http
+      .delete<void>(`${this.baseUrl}/${id}`)
+      .pipe(tap(() => this.invalidatePickerCache()));
   }
 
   // --- adapters: normalize both backend pagination shapes into one ---

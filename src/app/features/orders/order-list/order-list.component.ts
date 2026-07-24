@@ -12,7 +12,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { debounceTime } from 'rxjs';
 import { OrderService } from '../order.service';
-import { isOrderDeletable, Order, OrderStatus } from '../order.model';
+import { DELETABLE_STATUSES, Order, OrderStatus } from '../order.model';
 import { HasRoleDirective } from '../../../shared/directives/has-role.directive';
 import { ConfirmDialogService } from '../../../shared/services/confirm-dialog.service';
 import { SnackbarService } from '../../../shared/services/snackbar.service';
@@ -20,6 +20,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiError } from '../../../shared/models/api-error.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { isDeletableStatus } from '../../../shared/models/status-workflow.model';
 
 @Component({
   selector: 'app-orders-list',
@@ -114,7 +115,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   isDeletable(order: Order): boolean {
-    return isOrderDeletable(order.status);
+    return isDeletableStatus(DELETABLE_STATUSES, order.status);
   }
 
   viewOrder(order: Order): void {
