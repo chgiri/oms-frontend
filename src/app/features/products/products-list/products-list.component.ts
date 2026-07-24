@@ -57,8 +57,8 @@ export class ProductsListComponent implements OnInit {
     maxPrice: [null as number | null],
   });
 
-  private pageIndex = 0;
-  private pageSize = 10;
+  readonly pageIndex = signal(0);
+  readonly pageSize = signal(10);
   private sortBy = 'id';
   private sortDir: 'asc' | 'desc' = 'asc';
 
@@ -66,7 +66,7 @@ export class ProductsListComponent implements OnInit {
     this.loadProducts();
 
     this.filterForm.valueChanges.pipe(debounceTime(400)).subscribe(() => {
-      this.pageIndex = 0;
+      this.pageIndex.set(0);
       this.loadProducts();
     });
   }
@@ -86,10 +86,10 @@ export class ProductsListComponent implements OnInit {
             minPrice: this.filterForm.value.minPrice ?? undefined,
             maxPrice: this.filterForm.value.maxPrice ?? undefined,
           },
-          this.pageIndex,
-          this.pageSize,
+          this.pageIndex(),
+          this.pageSize(),
         )
-      : this.productsService.getAll(this.pageIndex, this.pageSize, this.sortBy, this.sortDir);
+      : this.productsService.getAll(this.pageIndex(), this.pageSize(), this.sortBy, this.sortDir);
 
     request$.subscribe({
       next: (page) => {
@@ -105,8 +105,8 @@ export class ProductsListComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
     this.loadProducts();
   }
 

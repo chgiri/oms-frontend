@@ -80,13 +80,13 @@ export class PaymentsListComponent implements OnInit {
     status: [null as PaymentStatus | null],
   });
 
-  private pageIndex = 0;
-  private pageSize = 10;
+  readonly pageIndex = signal(0);
+  readonly pageSize = signal(10);
 
   ngOnInit(): void {
     this.loadPayments();
     this.filterForm.valueChanges.pipe(debounceTime(400)).subscribe(() => {
-      this.pageIndex = 0;
+      this.pageIndex.set(0);
       this.loadPayments();
     });
   }
@@ -105,10 +105,10 @@ export class PaymentsListComponent implements OnInit {
             orderId: this.filterForm.value.orderId ?? undefined,
             status: this.filterForm.value.status ?? undefined,
           },
-          this.pageIndex,
-          this.pageSize,
+          this.pageIndex(),
+          this.pageSize(),
         )
-      : this.paymentService.getAll(this.pageIndex, this.pageSize);
+      : this.paymentService.getAll(this.pageIndex(), this.pageSize());
 
     request$.subscribe({
       next: (page) => {
@@ -124,8 +124,8 @@ export class PaymentsListComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
     this.loadPayments();
   }
 

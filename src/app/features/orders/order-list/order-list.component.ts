@@ -76,13 +76,13 @@ export class OrdersListComponent implements OnInit {
     status: [null as OrderStatus | null],
   });
 
-  private pageIndex = 0;
-  private pageSize = 10;
+  readonly pageIndex = signal(0);
+  readonly pageSize = signal(10);
 
   ngOnInit(): void {
     this.loadOrders();
     this.filterForm.valueChanges.pipe(debounceTime(300)).subscribe(() => {
-      this.pageIndex = 0;
+      this.pageIndex.set(0);
       this.loadOrders();
     });
   }
@@ -92,8 +92,8 @@ export class OrdersListComponent implements OnInit {
     const status = this.filterForm.value.status;
 
     const request$ = status
-      ? this.ordersService.search({ status }, this.pageIndex, this.pageSize)
-      : this.ordersService.getAll(this.pageIndex, this.pageSize);
+      ? this.ordersService.search({ status }, this.pageIndex(), this.pageSize())
+      : this.ordersService.getAll(this.pageIndex(), this.pageSize());
 
     request$.subscribe({
       next: (page) => {
@@ -109,8 +109,8 @@ export class OrdersListComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
     this.loadOrders();
   }
 

@@ -17,3 +17,9 @@
   cursor: not-allowed;
   display: inline-block; // spans don't normally show a custom cursor without a display value
 }
+
+.loading-row {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+}

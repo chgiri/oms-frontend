@@ -61,13 +61,13 @@ export class InventoryListComponent implements OnInit {
     lowStockOnly: [false],
   });
 
-  private pageIndex = 0;
-  private pageSize = 10;
+  readonly pageIndex = signal(0);
+  readonly pageSize = signal(10);
 
   ngOnInit(): void {
     this.loadInventory();
     this.filterForm.valueChanges.pipe(debounceTime(400)).subscribe(() => {
-      this.pageIndex = 0;
+      this.pageIndex.set(0);
       this.loadInventory();
     });
   }
@@ -90,10 +90,10 @@ export class InventoryListComponent implements OnInit {
             location: this.filterForm.value.location || undefined,
             lowStockOnly: !!this.filterForm.value.lowStockOnly,
           },
-          this.pageIndex,
-          this.pageSize,
+          this.pageIndex(),
+          this.pageSize(),
         )
-      : this.inventoryService.getAll(this.pageIndex, this.pageSize);
+      : this.inventoryService.getAll(this.pageIndex(), this.pageSize());
 
     request$.subscribe({
       next: (page) => {
@@ -109,8 +109,8 @@ export class InventoryListComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
     this.loadInventory();
   }
 
