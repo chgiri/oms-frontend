@@ -17,6 +17,7 @@ import { ApiError } from '../../../shared/models/api-error.model';
 import { SnackbarService } from '../../../shared/services/snackbar.service';
 import { CurrencyPipe } from '@angular/common';
 import { OrderRequest } from '../order.model';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-order-form',
@@ -31,6 +32,7 @@ import { OrderRequest } from '../order.model';
     MatButtonModule,
     MatIconModule,
     CurrencyPipe,
+    MatAutocompleteModule,
   ],
   templateUrl: './order-form.html',
   styleUrl: './order-form.scss',
@@ -50,6 +52,7 @@ export class OrderFormComponent implements OnInit {
 
   readonly form = this.fb.group({
     customerId: this.fb.control<number | null>(null, Validators.required),
+    customerSearch: this.fb.nonNullable.control('', Validators.required),
     items: this.fb.array([this.createItemGroup()]),
   });
 
@@ -76,6 +79,13 @@ export class OrderFormComponent implements OnInit {
     return this.products().filter((p) => !usedElsewhere.includes(p.id));
   }
 
+  filteredCustomers(): Customer[] {
+    const query = (this.form.controls.customerSearch.value ?? '').toLowerCase();
+    return this.customers().filter(
+      (p) => p.firstName.toLowerCase().includes(query) || p.lastName.toLowerCase().includes(query),
+    );
+  }
+
   private selectedProductCount(): number {
     const selected = this.items.controls
       .map((g) => g.value.productId)
@@ -89,6 +99,11 @@ export class OrderFormComponent implements OnInit {
 
   get allProductsSelected(): boolean {
     return this.selectedProductCount() === this.products().length && this.products().length > 0;
+  }
+
+  onCustomerSelected(customer: Customer): void {
+    this.form.controls.customerId.setValue(customer.id);
+    this.form.controls.customerSearch.setValue(`${customer.firstName} ${customer.lastName}`);
   }
 
   addItem(): void {
